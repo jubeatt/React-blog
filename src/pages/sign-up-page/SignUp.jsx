@@ -2,23 +2,13 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faLock, faCookie } from "@fortawesome/free-solid-svg-icons";
 import { useState, useContext } from "react";
+import { LoadingContext } from "../../contexts/LoadingContext";
 import { signUp } from "../../WebAPI";
 import { setAuthToken } from "../../utiles";
 import { AuthContext } from "../../contexts/AuthContext";
 import { getMe } from "../../WebAPI";
 import styled from "styled-components";
 import ErrorMessage from "../../components/ErrorMessage";
-import LoadingOverlay from "react-loading-overlay";
-
-const StyledLoader = styled(LoadingOverlay)`
-  & > ._loading_overlay_overlay {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-  }
-`;
 
 const Container = styled.div`
   max-width: 500px;
@@ -44,14 +34,17 @@ const Field = styled.div`
 const FieldName = styled.div`
   margin-left: 0.5em;
 `;
+
 const Input = styled.input`
   background-color: white;
   border: 1px solid ${({ theme }) => theme.gray_300};
   padding: 12px 10px;
   border-radius: 4px;
+  font-size: 1em;
   width: 100%;
   &:focus {
-    outline: 2px solid ${({ theme }) => theme.blue_400};
+    outline: 0;
+    box-shadow: 0 0 0 1px ${({ theme }) => theme.blue_400};
   }
 `;
 
@@ -79,18 +72,18 @@ const SubmitButton = styled.button`
 export default function SignUp() {
   const navigate = useNavigate();
   const { setUser } = useContext(AuthContext);
+  const { setIsLoading } = useContext(LoadingContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
   const [signUpError, setSignUpError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleUsernameChange = (e) => setUsername(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
   const handleNicknameChange = (e) => setNickname(e.target.value);
   const handleFormFocus = () => setSignUpError(null);
   const handleSubmit = async (e) => {
-    setIsLoading(true)
+    setIsLoading(true);
     e.preventDefault();
     const result = await signUp(username, password, nickname);
     if (result.ok === 0) {
@@ -98,14 +91,14 @@ export default function SignUp() {
       return setSignUpError(result.message);
     }
     // 寫入 storage
-    setAuthToken(result.token)
+    setAuthToken(result.token);
     // 取得個人資料
-    const userData =  await getMe()
+    const userData = await getMe();
     // 寫入 state
     setUser(userData);
     setIsLoading(false);
     // 返回首頁
-    navigate('/');
+    navigate("/");
   };
 
   return (
@@ -155,11 +148,6 @@ export default function SignUp() {
         </InputGroup>
         <SubmitButton>Sign up</SubmitButton>
       </Form>
-      <StyledLoader
-        active={isLoading}
-        spinner={true}
-        text="Loading your content..."
-      ></StyledLoader>
     </Container>
   );
 }

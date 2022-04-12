@@ -2,6 +2,7 @@ import { GlobalStyle } from "./components/GlobalStyle";
 import { ThemeProvider } from "styled-components";
 import { useState, useEffect } from "react";
 import { AuthContext } from "./contexts/AuthContext";
+import { LoadingContext } from "./contexts/LoadingContext";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import { getMe } from "./WebAPI";
 import { getAuthToken, setAuthToken } from "./utiles";
@@ -13,6 +14,19 @@ import SignUpPage from "./pages/sign-up-page";
 import CategoriesPage from "./pages/categories-page";
 import LoginPage from "./pages/log-in-page";
 import NavBar from "./components/NavBar";
+import LoadingOverlay from "react-loading-overlay";
+import styled from "styled-components";
+LoadingOverlay.propTypes = undefined;
+
+const StyledLoader = styled(LoadingOverlay)`
+  & > ._loading_overlay_overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+`;
 
 const theme = {
   green_100: "#53bd9580",
@@ -28,6 +42,7 @@ const theme = {
 
 function App() {
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const token = getAuthToken();
@@ -45,20 +60,27 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
-      <AuthContext.Provider value={{ user, setUser }}>
-        <Router>
-          <NavBar />
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/categories" element={<CategoriesPage />} />
-            <Route path="/posts" element={<PostsPage />} />
-            <Route path="/posts/:id" element={<SinglePostPage />} />
-            <Route path="/log-in" element={<LoginPage />} />
-            <Route path="/sign-up" element={<SignUpPage />} />
-          </Routes>
-        </Router>
-      </AuthContext.Provider>
+      <LoadingContext.Provider value={{ isLoading, setIsLoading }}>
+        <AuthContext.Provider value={{ user, setUser }}>
+          <Router>
+            <NavBar />
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/categories" element={<CategoriesPage />} />
+              <Route path="/posts" element={<PostsPage />} />
+              <Route path="/posts/:id" element={<SinglePostPage />} />
+              <Route path="/log-in" element={<LoginPage />} />
+              <Route path="/sign-up" element={<SignUpPage />} />
+            </Routes>
+            <StyledLoader
+              active={isLoading}
+              spinner={true}
+              text="Loading your content..."
+            ></StyledLoader>
+          </Router>
+        </AuthContext.Provider>
+      </LoadingContext.Provider>
     </ThemeProvider>
   );
 }

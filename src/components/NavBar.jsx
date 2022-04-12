@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { MEDIA_PC } from "../constants/breakpoint";
+import { MEDIA_HOVER } from "../constants/hover";
 import { AuthContext } from "../contexts/AuthContext";
 import { setAuthToken } from "../utiles";
 import styled from "styled-components";
@@ -96,10 +97,14 @@ const StyledLink = styled(NavLink)`
     background-color: ${({ theme }) => theme.green_400};
     transition: width 0.3s;
   }
-  &:hover::after {
-    width: 100%;
+  ${MEDIA_HOVER} {
+    &:hover::after {
+      width: 100%;
+    }
   }
-  ${({ $active }) => $active && `&::after{width: 100%}`};
+  ${MEDIA_PC} {
+    ${({ $active }) => $active && `&::after{width: 100%}`};
+  }
 `;
 
 const LogOutButton = styled.button`
@@ -111,6 +116,7 @@ const LogOutButton = styled.button`
   text-align: left;
   font-family: inherit;
   font-size: inherit;
+  color: inherit;
   cursor: pointer;
   width: 100%;
   &::after {

@@ -1,19 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { getSinglePost } from "../../WebAPI";
+import { LoadingContext } from "../../contexts/LoadingContext";
 import styled from "styled-components";
 import avatar from "../../assets/avatar.jpg";
-import LoadingOverlay from "react-loading-overlay";
 
-const StyledLoader = styled(LoadingOverlay)`
-  & > ._loading_overlay_overlay {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-  }
-`;
 
 const Container = styled.div`
   max-width: 1280px;
@@ -58,7 +49,7 @@ const Body = styled.div`
 
 export default function SinglePostPage() {
   const [post, setPost] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { setIsLoading } = useContext(LoadingContext);
   const { id } = useParams();
 
   useEffect(() => {
@@ -67,7 +58,7 @@ export default function SinglePostPage() {
       setPost(data);
       setIsLoading(false);
     });
-  }, [id]);
+  }, [id, setIsLoading]);
 
   return (
     <Container>
@@ -91,11 +82,6 @@ export default function SinglePostPage() {
         <Title>{post.title || "..."}</Title>
       </Head>
       <Body>{post.body || "..."}</Body>
-      <StyledLoader
-        active={isLoading}
-        spinner={true}
-        text="Loading your content..."
-      ></StyledLoader>
     </Container>
   );
 }

@@ -1,19 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { getAllPosts } from "../../WebAPI";
+import { LoadingContext } from "../../contexts/LoadingContext";
 import Post from "../../components/Post";
 import styled from "styled-components";
-import LoadingOverlay from "react-loading-overlay";
-LoadingOverlay.propTypes = undefined;
-
-const StyledLoader = styled(LoadingOverlay)`
-  & > ._loading_overlay_overlay {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-  }
-`;
 
 const Container = styled.div`
   max-width: 1280px;
@@ -32,14 +21,17 @@ const PostList = styled.ul`
 `;
 
 export default function HomePage() {
-  const [isLoading, setIsLoading] = useState(true);
+  const { setIsLoading } = useContext(LoadingContext);
   const [posts, setPosts] = useState([]);
+
   useEffect(() => {
+    // 當 render 完以後才執行。
+    setIsLoading(true);
     getAllPosts().then((data) => {
       setPosts(data);
       setIsLoading(false);
     });
-  }, []);
+  }, [setIsLoading]);
 
   return (
     <Container>
@@ -55,11 +47,6 @@ export default function HomePage() {
           />
         ))}
       </PostList>
-      <StyledLoader
-        active={isLoading}
-        spinner={true}
-        text="Loading your content..."
-      ></StyledLoader>
     </Container>
   );
 }
