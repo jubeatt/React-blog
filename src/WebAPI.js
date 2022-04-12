@@ -3,7 +3,7 @@ import { getAuthToken } from "./utiles";
 const BASE_URL = "https://student-json-api.lidemy.me";
 export const getAllPosts = async () => {
   const res = await fetch(
-    `${BASE_URL}/posts?_limit=50&_sort=createdAt&_order=desc`
+    `${BASE_URL}/posts?_limit=30&_sort=createdAt&_order=desc`
   );
   const json = await res.json();
   return json;
@@ -52,6 +52,23 @@ export const getMe = async () => {
     headers: {
       authorization: `Bearer ${token}`,
     },
+  });
+  const json = await res.json();
+  return json;
+};
+
+export const addPost = async (title, body) => {
+  const token = getAuthToken();
+  const res = await fetch(`${BASE_URL}/posts`, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      title,
+      body,
+    }),
   });
   const json = await res.json();
   return json;

@@ -2,12 +2,12 @@ import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { getSinglePost } from "../../WebAPI";
 import { LoadingContext } from "../../contexts/LoadingContext";
+import MDEditor from "@uiw/react-md-editor";
 import styled from "styled-components";
 import avatar from "../../assets/avatar.jpg";
 
-
 const Container = styled.div`
-  max-width: 1280px;
+  max-width: ${({ theme }) => theme.containerWidth};
   padding: 30px 20px;
   margin: 0 auto;
 `;
@@ -41,11 +41,7 @@ const Title = styled.h2`
   border-bottom: 1px solid ${({ theme }) => theme.gray_100};
   padding-bottom: 10px;
 `;
-const Body = styled.div`
-  line-height: 1.5;
-  word-break: break-word;
-  white-space: pre-line;
-`;
+const Body = styled.div``;
 
 export default function SinglePostPage() {
   const [post, setPost] = useState([]);
@@ -81,7 +77,9 @@ export default function SinglePostPage() {
         </Info>
         <Title>{post.title || "..."}</Title>
       </Head>
-      <Body>{post.body || "..."}</Body>
+      <Body>
+        {post.body ? <MDEditor.Markdown source={post.body} /> : "..."}
+      </Body>
     </Container>
   );
 }

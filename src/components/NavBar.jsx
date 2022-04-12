@@ -16,12 +16,13 @@ const Wrapper = styled.header`
   height: 85px;
   background-color: white;
   box-shadow: 0px 2px 4px 0px ${({ theme }) => theme.gray_100};
+  z-index: 100;
 `;
 const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 1280px;
+  max-width: ${({ theme }) => theme.containerWidth};
   padding: 20px;
   margin: 0 auto;
   height: 100%;
@@ -180,9 +181,14 @@ export default function NavBar() {
         <Nav $isMenuOpen={isMenuOpen}>
           <List>
             <Item>
-              <StyledLink to="/posts" $active={location.pathname === "/posts"}>
-                Posts
-              </StyledLink>
+              {user && (
+                <StyledLink
+                  to="/add-post"
+                  $active={location.pathname === "/add-post"}
+                >
+                  Add Post
+                </StyledLink>
+              )}
             </Item>
             <Item>
               <StyledLink

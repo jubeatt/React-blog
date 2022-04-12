@@ -1,70 +1,61 @@
-# Getting Started with Create React App
+# React Blog
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 這是什麼？
 
-## Available Scripts
+這是用 React 串接 [Lidemy 學生專用 API Server](https://github.com/Lidemy/lidemy-student-json-api-server) 打造的簡易部落格。
 
-In the project directory, you can run:
+目前做好的功能有：
 
-### `npm start`
+- 登入 / 註冊機制
+- 顯示文章列表
+- Markdown 編輯功能
+- RWD
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+大概就這樣吧！不過我希望這個部落格可以更完整一些，希望之後可以有：
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- 文章留言功能
+- 個人 Profile 頁面
+- 每個使用者都可以有自己的文章列表
 
-### `npm test`
+所以，沒意外的話之後會自己重新寫一個後端來串吧，目前這個 API 能做的事情非常有限，加油加油～ 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+## 網頁預覽
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 首頁
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+![home-page](./preview-img/home-page.jpg)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 單篇文章
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+![single-post](./preview-img/single-post.jpg)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+### 註冊頁面
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+![sign-up-page](./preview-img/sign-up-page.jpg)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+### 登入頁面
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+![log-in-page](./preview-img/log-in-page.jpg)
 
-### Analyzing the Bundle Size
+### 編輯頁面
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+![add-post-page](./preview-img/add-post-page.jpg)
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
+## 主要參考的設計稿
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
+### 網站整體
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+從 Dribbble 找到 [Weronika Prasek](https://dribbble.com/shots/15315334--Segment-Blog) 設計的網頁（也參考了一些 Medium 的元素）
 
-### `npm run build` fails to minify
+### 登入和註冊表單
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+從 Dribbble 找到 [Pixsellz](https://dribbble.com/shots/16502934-Sign-up-Log-in) 設計的表單

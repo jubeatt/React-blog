@@ -8,7 +8,7 @@ import { getMe } from "./WebAPI";
 import { getAuthToken, setAuthToken } from "./utiles";
 import HomePage from "./pages/home-page/";
 import AboutPage from "./pages/about-page/";
-import PostsPage from "./pages/posts-page/";
+import AddPostPage from "./pages/add-post-page";
 import SinglePostPage from "./pages/single-post-page/";
 import SignUpPage from "./pages/sign-up-page";
 import CategoriesPage from "./pages/categories-page";
@@ -29,6 +29,7 @@ const StyledLoader = styled(LoadingOverlay)`
 `;
 
 const theme = {
+  containerWidth: "1000px",
   green_100: "#53bd9580",
   green_400: "#53BD95",
   green_500: "#3e8e70",
@@ -48,7 +49,6 @@ function App() {
     const token = getAuthToken();
     if (token === "null") return;
     getMe().then((res) => {
-      console.log(res);
       if (res.ok === 1) {
         setUser(res.data);
       } else {
@@ -68,7 +68,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/categories" element={<CategoriesPage />} />
-              <Route path="/posts" element={<PostsPage />} />
+              <Route path="/add-post" element={<AddPostPage />} />
               <Route path="/posts/:id" element={<SinglePostPage />} />
               <Route path="/log-in" element={<LoginPage />} />
               <Route path="/sign-up" element={<SignUpPage />} />
