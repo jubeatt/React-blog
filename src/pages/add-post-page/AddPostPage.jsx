@@ -78,7 +78,6 @@ export default function AddPostPage() {
     checkPermission().then((isLogin) => {
       // 沒登入
       if (!isLogin) return navigate("/");
-      console.log("驗證成功");
     });
   }, [navigate]);
 
@@ -102,8 +101,6 @@ export default function AddPostPage() {
     setTitleValue(e.target.value);
   };
   
-  console.log(mdValue)
-
   return (
     <Container>
       <PageTitle>新增文章</PageTitle>
