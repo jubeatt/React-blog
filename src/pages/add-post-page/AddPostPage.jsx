@@ -100,7 +100,7 @@ export default function AddPostPage() {
   const handleTitleChange = (e) => {
     setTitleValue(e.target.value);
   };
-  
+
   return (
     <Container>
       <PageTitle>新增文章</PageTitle>

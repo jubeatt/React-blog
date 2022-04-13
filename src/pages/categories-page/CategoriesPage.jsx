@@ -12,11 +12,10 @@ const PageTitle = styled.h2`
   margin: 20px 0 40px 0;
 `;
 
-
 export default function CategoriesPage() {
   return (
     <Container>
       <PageTitle>分類</PageTitle>
     </Container>
-  )
+  );
 }

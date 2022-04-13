@@ -18,27 +18,21 @@
 - 個人 Profile 頁面
 - 每個使用者都可以有自己的文章列表
 
-所以，沒意外的話之後會自己重新寫一個後端來串吧，目前這個 API 能做的事情非常有限，加油加油～ 
-
+所以，沒意外的話之後會自己重新寫一個後端來串吧，目前這個 API 能做的事情非常有限，加油加油～
 
 ## 網頁預覽
 
-
 ### 首頁
 
-
 ![home-page](./preview-img/home-page.jpg)
-
 
 ### 單篇文章
 
 ![single-post](./preview-img/single-post.jpg)
 
-
 ### 註冊頁面
 
 ![sign-up-page](./preview-img/sign-up-page.jpg)
-
 
 ### 登入頁面
 
@@ -48,10 +42,7 @@
 
 ![add-post-page](./preview-img/add-post-page.jpg)
 
-
-
 ## 主要參考的設計稿
-
 
 ### 網站整體
 

@@ -34,8 +34,7 @@ const content = `
 所以，沒意外的話之後會自己重新寫一個後端來串吧，目前這個 API 能做的事情非常有限，加油加油～ 
 
 想知道更多詳細資訊可以參考我的 [Repository](https://github.com/jubeatt/React-blog)
-`
-
+`;
 
 export default function AboutPage() {
   return (

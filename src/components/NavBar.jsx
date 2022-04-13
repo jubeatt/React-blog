@@ -1,6 +1,4 @@
 import { Link as NavLink, useLocation } from "react-router-dom";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { MEDIA_PC } from "../constants/breakpoint";
@@ -8,6 +6,12 @@ import { MEDIA_HOVER } from "../constants/hover";
 import { AuthContext } from "../contexts/AuthContext";
 import { setAuthToken } from "../utiles";
 import styled from "styled-components";
+
+const HamBurgerConfig = {
+  width: 32,
+  height: 24,
+  weight: 4,
+};
 
 const Wrapper = styled.header`
   position: fixed;
@@ -37,17 +41,62 @@ const Logo = styled(NavLink)`
   font-weight: bold;
 `;
 
-const HamBurger = styled.button`
-  background-color: transparent;
+const HamburgerSecondWrapper = styled.button`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: ${HamBurgerConfig.width}px;
+  height: ${HamBurgerConfig.height}px;
   border: none;
+  background-color: transparent;
   cursor: pointer;
-  > svg {
-    width: 26px;
-    height: 26px;
-    color: ${({ theme }) => theme.green_400};
-  }
+
   ${MEDIA_PC} {
     display: none;
+  }
+
+  ${({ $isMenuOpen }) =>
+    $isMenuOpen &&
+    `
+    & > ${HamburgerSecondInner} {
+      transform: rotate(135deg);
+    }
+    & > ${HamburgerSecondInner}::before {
+      transform: rotate(90deg);
+    }
+    & > ${HamburgerSecondInner}::after {
+      transform: rotate(90deg);
+    }
+  `}
+`;
+
+const HamburgerSecondInner = styled.span`
+  width: ${HamBurgerConfig.width}px;
+  height: ${HamBurgerConfig.weight}px;
+  background-color: ${({ theme }) => theme.green_400};
+  transition: all 0.5s ease-in-out;
+  border-radius: 4px;
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 32px;
+    height: ${HamBurgerConfig.weight}px;
+    border-radius: 4px;
+    background-color: ${({ theme }) => theme.green_400};
+    transition: all 0.3s ease-in-out;
+  }
+  &::before {
+    transform: translateY(
+      -${Math.floor((HamBurgerConfig.height - HamBurgerConfig.weight) / 2)}px
+    );
+  }
+  &::after {
+    transform: translateY(
+      ${Math.floor((HamBurgerConfig.height - HamBurgerConfig.weight) / 2)}px
+    );
   }
 `;
 
@@ -174,9 +223,12 @@ export default function NavBar() {
           <Logo to="/">Peanu's blog</Logo>
         </LogoBlock>
 
-        <HamBurger onClick={handleToggleMenu}>
-          <FontAwesomeIcon icon={faBars} />
-        </HamBurger>
+        <HamburgerSecondWrapper
+          $isMenuOpen={isMenuOpen}
+          onClick={handleToggleMenu}
+        >
+          <HamburgerSecondInner />
+        </HamburgerSecondWrapper>
 
         <Nav $isMenuOpen={isMenuOpen}>
           <List>
