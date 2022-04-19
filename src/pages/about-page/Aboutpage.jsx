@@ -5,6 +5,7 @@ const Container = styled.div`
   max-width: ${({ theme }) => theme.containerWidth};
   padding: 10px 20px;
   margin: 0 auto;
+  min-height: calc(100vh - 85px - 42px);
 `;
 
 const PageTitle = styled.h2`
@@ -12,6 +13,10 @@ const PageTitle = styled.h2`
   border-left: 4px solid ${({ theme }) => theme.green_400};
   margin: 20px 0 40px 0;
 `;
+
+const Wrapper = styled.div`
+  padding: 0 0 20px 0;
+`
 
 const content = `
 這是用 React 串接 [Lidemy 學生專用 API Server](https://github.com/Lidemy/lidemy-student-json-api-server) 打造的簡易部落格。
@@ -21,6 +26,7 @@ const content = `
 - 登入 / 註冊機制
 - 發文功能
 - 顯示文章列表
+- 分頁功能
 - Markdown 編輯器
 - RWD
 
@@ -40,7 +46,9 @@ export default function AboutPage() {
   return (
     <Container>
       <PageTitle>關於這個部落格</PageTitle>
-      <MDEditor.Markdown source={content} />
+      <Wrapper>
+        <MDEditor.Markdown source={content} />
+      </Wrapper>
     </Container>
   );
 }

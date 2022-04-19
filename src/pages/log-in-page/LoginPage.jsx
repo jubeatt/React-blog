@@ -14,6 +14,7 @@ const Container = styled.div`
   max-width: 500px;
   padding: 30px 20px;
   margin: 0 auto;
+  min-height: calc(100vh - 85px - 42px);
 `;
 
 const PageTitle = styled.h2`

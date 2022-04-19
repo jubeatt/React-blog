@@ -1,12 +1,13 @@
 import { getAuthToken } from "./utiles";
 
 const BASE_URL = "https://student-json-api.lidemy.me";
-export const getAllPosts = async () => {
+export const getPosts = async (page, limit) => {
   const res = await fetch(
-    `${BASE_URL}/posts?_limit=30&_sort=createdAt&_order=desc`
+    `${BASE_URL}/posts?_page=${page}&_limit=${limit}&_sort=createdAt&_order=desc`
   );
+  const totalPage = Number(res.headers.get("x-total-count"));
   const json = await res.json();
-  return json;
+  return [json, totalPage];
 };
 
 export const getSinglePost = async (id) => {

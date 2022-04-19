@@ -14,6 +14,7 @@ import SignUpPage from "./pages/sign-up-page";
 import CategoriesPage from "./pages/categories-page";
 import LoginPage from "./pages/log-in-page";
 import NavBar from "./components/NavBar";
+import Footer from "./components/Footer"
 import LoadingOverlay from "react-loading-overlay";
 import styled from "styled-components";
 LoadingOverlay.propTypes = undefined;
@@ -73,6 +74,7 @@ function App() {
               <Route path="/log-in" element={<LoginPage />} />
               <Route path="/sign-up" element={<SignUpPage />} />
             </Routes>
+            <Footer />
             <StyledLoader
               active={isLoading}
               spinner={true}
