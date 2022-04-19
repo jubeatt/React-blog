@@ -10,6 +10,7 @@ const Container = styled.div`
   max-width: ${({ theme }) => theme.containerWidth};
   padding: 30px 20px;
   margin: 0 auto;
+  min-height: calc(100vh - 85px - 42px);
 `;
 const Head = styled.div``;
 const Info = styled.div`
