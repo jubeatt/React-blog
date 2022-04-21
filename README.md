@@ -1,5 +1,7 @@
 # React Blog
 
+連結：https://jubeatt.github.io/React-blog/
+
 ## 這是什麼？
 
 這是用 React 串接 [Lidemy 學生專用 API Server](https://github.com/Lidemy/lidemy-student-json-api-server) 打造的簡易部落格。
