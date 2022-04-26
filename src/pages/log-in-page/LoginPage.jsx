@@ -77,10 +77,10 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState(null);
 
-  const handleUsernameChange = (e) => setUsername(e.target.value);
-  const handlePasswordChange = (e) => setPassword(e.target.value);
+  const handleUsernameChange = e => setUsername(e.target.value);
+  const handlePasswordChange = e => setPassword(e.target.value);
   const handleFormFocus = () => setLoginError(null);
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     setIsLoading(true);
     e.preventDefault();
     const data = await login(username, password);

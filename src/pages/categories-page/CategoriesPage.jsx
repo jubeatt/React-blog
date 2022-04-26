@@ -17,6 +17,7 @@ export default function CategoriesPage() {
   return (
     <Container>
       <PageTitle>分類</PageTitle>
+      <div>目前還沒有實作這功能唷...</div>
     </Container>
   );
 }

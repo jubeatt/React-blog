@@ -252,7 +252,7 @@ export default function NavBar() {
             </Item>
             <Item>
               <StyledLink to="/about" $active={location.pathname === "/about"}>
-                About Me
+                About
               </StyledLink>
             </Item>
             <Item>

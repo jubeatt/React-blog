@@ -1,6 +1,11 @@
 import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
-import { getSinglePost } from "../../WebAPI";
+import {
+  getSinglePost,
+  selectPost,
+  setPost,
+} from "../../redux/reducers/postsReducer";
+import { useSelector, useDispatch } from "react-redux";
 import { LoadingContext } from "../../contexts/LoadingContext";
 import MDEditor from "@uiw/react-md-editor";
 import styled from "styled-components";
@@ -45,17 +50,19 @@ const Title = styled.h2`
 const Body = styled.div``;
 
 export default function SinglePostPage() {
-  const [post, setPost] = useState([]);
   const { setIsLoading } = useContext(LoadingContext);
+  const post = useSelector(selectPost);
+  const dispatch = useDispatch();
   const { id } = useParams();
 
   useEffect(() => {
     setIsLoading(true);
-    getSinglePost(id).then((data) => {
-      setPost(data);
-      setIsLoading(false);
-    });
-  }, [id, setIsLoading]);
+    dispatch(getSinglePost(id)).then(() => setIsLoading(false));
+    return () => {
+      console.log("clear effect");
+      dispatch(setPost({}));
+    };
+  }, [dispatch, id, setIsLoading]);
 
   return (
     <Container>

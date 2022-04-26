@@ -16,7 +16,7 @@ const PageTitle = styled.h2`
 
 const Wrapper = styled.div`
   padding: 0 0 20px 0;
-`
+`;
 
 const content = `
 這是用 React 串接 [Lidemy 學生專用 API Server](https://github.com/Lidemy/lidemy-student-json-api-server) 打造的簡易部落格。

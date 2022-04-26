@@ -79,11 +79,11 @@ export default function SignUp() {
   const [nickname, setNickname] = useState("");
   const [signUpError, setSignUpError] = useState(null);
 
-  const handleUsernameChange = (e) => setUsername(e.target.value);
-  const handlePasswordChange = (e) => setPassword(e.target.value);
-  const handleNicknameChange = (e) => setNickname(e.target.value);
+  const handleUsernameChange = e => setUsername(e.target.value);
+  const handlePasswordChange = e => setPassword(e.target.value);
+  const handleNicknameChange = e => setNickname(e.target.value);
   const handleFormFocus = () => setSignUpError(null);
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     setIsLoading(true);
     e.preventDefault();
     const result = await signUp(username, password, nickname);

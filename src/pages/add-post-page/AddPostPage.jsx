@@ -1,15 +1,20 @@
 import { useNavigate } from "react-router-dom";
 import { checkPermission } from "../../utiles";
-import { addPost } from "../../WebAPI";
 import { LoadingContext } from "../../contexts/LoadingContext";
 import { useState, useEffect, useContext } from "react";
+import {
+  addPost,
+  selectNewPostResponse,
+  setNewPostResponse,
+} from "../../redux/reducers/postsReducer";
+import { useSelector, useDispatch } from "react-redux";
 import MDEditor from "@uiw/react-md-editor";
 import styled from "styled-components";
 import ErrorMessage from "../../components/ErrorMessage";
 
 const Container = styled.div`
   max-width: ${({ theme }) => theme.containerWidth};
-  padding: 10px 20px;
+  padding: 10px 20px 40px;
   margin: 0 auto;
 `;
 
@@ -73,31 +78,38 @@ export default function AddPostPage() {
   const [mdValue, setMdValue] = useState("");
   const [titleValue, setTitleValue] = useState("");
   const [addPostError, setAddPostError] = useState(null);
+  const newPostResponse = useSelector(selectNewPostResponse);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    checkPermission().then((isLogin) => {
+    console.log("check permission");
+    checkPermission().then(isLogin => {
       // 沒登入
       if (!isLogin) return navigate("/");
     });
   }, [navigate]);
 
-  const handleSubmit = async (e) => {
+  useEffect(() => {
+    setIsLoading(false);
+    if (newPostResponse && newPostResponse.ok === 0) {
+      setAddPostError(newPostResponse.message);
+    } else if (newPostResponse) {
+      navigate(`/posts/${newPostResponse.id}`);
+    }
+    return () => dispatch(setNewPostResponse(null));
+  }, [newPostResponse, setIsLoading, navigate, dispatch]);
+
+  const handleSubmit = async e => {
     setIsLoading(true);
     e.preventDefault();
-    const result = await addPost(titleValue, mdValue);
-    if (result.ok === 0) {
-      setIsLoading(false);
-      return setAddPostError(result.message);
-    }
-    setIsLoading(false);
-    navigate("/");
+    dispatch(addPost(titleValue, mdValue));
   };
 
   const handleFormFocus = () => {
     setAddPostError(null);
   };
 
-  const handleTitleChange = (e) => {
+  const handleTitleChange = e => {
     setTitleValue(e.target.value);
   };
 

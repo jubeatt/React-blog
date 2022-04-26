@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 import styled from "styled-components";
 import avatar from "../assets/avatar.jpg";
 import PropTypes from "prop-types";
+
 
 const PostItem = styled.li`
   padding: 24px 0;
@@ -53,13 +56,34 @@ const ReadMoreButton = styled(Link)`
   padding: 10px 18px;
   border: none;
   cursor: pointer;
+  margin-left: 1em;
   &:hover {
     color: ${({ theme }) => theme.blue_100};
     background-color: ${({ theme }) => theme.blue_400};
   }
 `;
 
-export default function Post({ id, title, body, createdAt }) {
+const DeleteButton = styled.button`
+  display: inline-block;
+  line-height: 1;
+  font-family: inherit;
+  font-size: 1em;
+  background-color: ${({ theme }) => theme.red_100};
+  color: ${({ theme }) => theme.red_400};
+  border-radius: 4px;
+  padding: 10px 18px;
+  border: none;
+  cursor: pointer;
+  &:hover {
+    color: ${({ theme }) => theme.red_100};
+    background-color: ${({ theme }) => theme.red_400};
+  }
+`;
+
+export default function Post({ id, title, body, createdAt, handleDeletePost }) {
+
+  const { user } = useContext(AuthContext);
+
   return (
     <PostItem>
       <PostHead>
@@ -80,6 +104,7 @@ export default function Post({ id, title, body, createdAt }) {
         <PostPreviewContent>{body}</PostPreviewContent>
       </PostBody>
       <PostFoot>
+        { user && <DeleteButton onClick={() => handleDeletePost(id)}>Delete</DeleteButton> }
         <ReadMoreButton to={`/posts/${id}`}>Read</ReadMoreButton>
       </PostFoot>
     </PostItem>

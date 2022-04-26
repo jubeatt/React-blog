@@ -10,7 +10,7 @@ export const getPosts = async (page, limit) => {
   return [json, totalPage];
 };
 
-export const getSinglePost = async (id) => {
+export const getSinglePost = async id => {
   const res = await fetch(`${BASE_URL}/posts/${id}`);
   const json = await res.json();
   return json;
@@ -73,4 +73,10 @@ export const addPost = async (title, body) => {
   });
   const json = await res.json();
   return json;
+};
+
+export const deletePost = async id => {
+  await fetch(`${BASE_URL}/posts/${id}`, {
+    method: "DELETE",
+  });
 };

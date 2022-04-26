@@ -6,9 +6,8 @@ const Content = styled.div`
   height: 42px;
   line-height: 42px;
   color: white;
-`
+`;
 
-
-export default function Footer () {
-  return <Content>© 2022 PeaNu  Powered by React & Express</Content>
+export default function Footer() {
+  return <Content>© 2022 PeaNu Powered by React & Express</Content>;
 }
