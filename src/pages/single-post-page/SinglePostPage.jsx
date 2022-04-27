@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import {
   getSinglePost,
@@ -57,9 +57,10 @@ export default function SinglePostPage() {
 
   useEffect(() => {
     setIsLoading(true);
-    dispatch(getSinglePost(id)).then(() => setIsLoading(false));
+    dispatch(getSinglePost(id)).then(() =>
+      setTimeout(() => setIsLoading(false), 500)
+    );
     return () => {
-      console.log("clear effect");
       dispatch(setPost({}));
     };
   }, [dispatch, id, setIsLoading]);

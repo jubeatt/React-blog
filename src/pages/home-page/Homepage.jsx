@@ -1,7 +1,14 @@
-import { useEffect, useState, useContext, useRef, useCallback } from "react";
-import { getPosts, deletePost } from "../../WebAPI";
+import { useEffect, useState, useContext, useCallback } from "react";
+import { deletePost } from "../../WebAPI";
 import { MEDIA_PC } from "../../constants/breakpoint";
 import { LoadingContext } from "../../contexts/LoadingContext";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  getAllPosts,
+  selectAllPosts,
+  selectTotalPage,
+  LIMIT,
+} from "../../redux/reducers/postsReducer";
 import Post from "../../components/Post";
 import styled from "styled-components";
 
@@ -57,44 +64,38 @@ const PaginationButton = styled.button`
 
 export default function HomePage() {
   const { setIsLoading } = useContext(LoadingContext);
-  const [posts, setPosts] = useState([]);
+  const dispatch = useDispatch();
+  const posts = useSelector(selectAllPosts);
+  const totalPage = useSelector(selectTotalPage);
   const [page, setPage] = useState(1);
-  const LIMIT = useRef(10);
-  const totalPage = useRef(0);
 
-  const handleChangePage = useCallback(direction => {
-    if (direction === "first") return setPage(1);
-    if (direction === "next") return setPage(prev => prev + 1);
-    if (direction === "back") return setPage(prev => prev - 1);
-    if (direction === "last") return setPage(totalPage.current);
-  }, []);
+  const handleChangePage = useCallback(
+    direction => {
+      if (direction === "first") return setPage(1);
+      if (direction === "next") return setPage(prev => prev + 1);
+      if (direction === "back") return setPage(prev => prev - 1);
+      if (direction === "last") return setPage(totalPage);
+    },
+    [totalPage]
+  );
 
   const handleDeletePost = async id => {
     setIsLoading(true);
     await deletePost(id);
-    // 當 render 完以後才執行。
-    getPosts(page, LIMIT).then(([data, total]) => {
-      totalPage.current = Math.ceil(total / LIMIT.current);
-      setPosts(data);
-      // 為了 UX 而加的，不然閃太快了
-      setTimeout(() => setIsLoading(false), 500);
-    });
+    dispatch(getAllPosts(page, LIMIT)).then(() => setIsLoading(false));
   };
 
   useEffect(() => {
+    setIsLoading(true);
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
-    // 當 render 完以後才執行。
-    setIsLoading(true);
-    getPosts(page, LIMIT).then(([data, total]) => {
-      totalPage.current = Math.ceil(total / LIMIT.current);
-      setPosts(data);
-      // 為了 UX 而加的，不然閃太快了
-      setTimeout(() => setIsLoading(false), 500);
-    });
-  }, [setIsLoading, page]);
+    // 為了較好的 UX 而加的延遲
+    dispatch(getAllPosts(page, LIMIT)).then(() =>
+      setTimeout(() => setIsLoading(false), 500)
+    );
+  }, [page, setIsLoading, dispatch]);
 
   return (
     <Container>
@@ -113,7 +114,7 @@ export default function HomePage() {
       </PostList>
       <Pagination>
         <PaginationHeader>
-          目前在第 {page} 頁，總共有 {totalPage.current} 頁
+          目前在第 {page} 頁，總共有 {totalPage} 頁
         </PaginationHeader>
         <PaginationBody>
           {page !== 1 && (
@@ -127,7 +128,7 @@ export default function HomePage() {
             </>
           )}
 
-          {page < totalPage.current && (
+          {page < totalPage && (
             <>
               <PaginationButton onClick={() => handleChangePage("next")}>
                 下一頁

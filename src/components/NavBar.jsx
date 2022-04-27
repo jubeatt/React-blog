@@ -209,6 +209,7 @@ export default function NavBar() {
     setAuthToken(null);
     setUser(null);
     setIsMenuOpen(false);
+    if (window.location.hash === "#/") return window.location.reload();
     history("/");
   };
 

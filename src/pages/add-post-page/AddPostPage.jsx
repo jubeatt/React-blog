@@ -82,7 +82,6 @@ export default function AddPostPage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("check permission");
     checkPermission().then(isLogin => {
       // 沒登入
       if (!isLogin) return navigate("/");

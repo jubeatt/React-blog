@@ -5,7 +5,6 @@ import styled from "styled-components";
 import avatar from "../assets/avatar.jpg";
 import PropTypes from "prop-types";
 
-
 const PostItem = styled.li`
   padding: 24px 0;
   border-top: 1px solid ${({ theme }) => theme.gray_100};
@@ -81,7 +80,6 @@ const DeleteButton = styled.button`
 `;
 
 export default function Post({ id, title, body, createdAt, handleDeletePost }) {
-
   const { user } = useContext(AuthContext);
 
   return (
@@ -104,7 +102,11 @@ export default function Post({ id, title, body, createdAt, handleDeletePost }) {
         <PostPreviewContent>{body}</PostPreviewContent>
       </PostBody>
       <PostFoot>
-        { user && <DeleteButton onClick={() => handleDeletePost(id)}>Delete</DeleteButton> }
+        {user && (
+          <DeleteButton onClick={() => handleDeletePost(id)}>
+            Delete
+          </DeleteButton>
+        )}
         <ReadMoreButton to={`/posts/${id}`}>Read</ReadMoreButton>
       </PostFoot>
     </PostItem>
@@ -116,4 +118,5 @@ Post.propTypes = {
   title: PropTypes.string,
   body: PropTypes.string,
   createdAt: PropTypes.number,
+  handleDeletePost: PropTypes.func,
 };

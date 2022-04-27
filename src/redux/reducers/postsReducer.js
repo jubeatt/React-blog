@@ -1,9 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getSinglePost as getPost, addPost as createPost, getPosts } from "../../WebAPI";
+import {
+  getSinglePost as getPost,
+  addPost as createPost,
+  getPosts,
+} from "../../WebAPI";
+
+export const LIMIT = 10;
 
 const initialState = {
   posts: [],
   post: {},
+  totalPage: 0,
   newPostResponse: null,
 };
 
@@ -20,11 +27,15 @@ export const postsSlice = createSlice({
     setNewPostResponse: (state, action) => {
       state.newPostResponse = action.payload;
     },
+    setTotalPage: (state, action) => {
+      state.totalPage = Math.ceil(action.payload / LIMIT);
+    },
   },
 });
 
 // actions
-export const { setPost, setNewPostResponse, setAllPosts } = postsSlice.actions;
+export const { setPost, setNewPostResponse, setAllPosts, setTotalPage } =
+  postsSlice.actions;
 
 // thunk actions
 export const getSinglePost = id => async dispatch => {
@@ -36,12 +47,13 @@ export const getSinglePost = id => async dispatch => {
   }
 };
 
-export const getAllPosts = () => async dispatch => {
+export const getAllPosts = (page, limit) => async dispatch => {
   try {
-    const res = await getPosts();
-    return dispatch(setAllPosts(res));
+    const [res, total] = await getPosts(page, limit);
+    dispatch(setAllPosts(res));
+    dispatch(setTotalPage(total));
   } catch (err) {
-    console.log('error', err);
+    console.log("error", err);
   }
 };
 
@@ -58,6 +70,7 @@ export const addPost = (title, content) => async dispatch => {
 export const selectAllPosts = store => store.posts.posts;
 export const selectPost = store => store.posts.post;
 export const selectNewPostResponse = store => store.posts.newPostResponse;
+export const selectTotalPage = store => store.posts.totalPage;
 
 // reducer
 export default postsSlice.reducer;
