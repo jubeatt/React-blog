@@ -41,7 +41,7 @@ const Logo = styled(NavLink)`
   font-weight: bold;
 `;
 
-const HamburgerSecondWrapper = styled.button`
+const HamburgerWrapper = styled.button`
   position: relative;
   display: flex;
   justify-content: center;
@@ -59,19 +59,19 @@ const HamburgerSecondWrapper = styled.button`
   ${({ $isMenuOpen }) =>
     $isMenuOpen &&
     `
-    & > ${HamburgerSecondInner} {
+    & > ${HamburgerInner} {
       transform: rotate(135deg);
     }
-    & > ${HamburgerSecondInner}::before {
+    & > ${HamburgerInner}::before {
       transform: rotate(90deg);
     }
-    & > ${HamburgerSecondInner}::after {
+    & > ${HamburgerInner}::after {
       transform: rotate(90deg);
     }
   `}
 `;
 
-const HamburgerSecondInner = styled.span`
+const HamburgerInner = styled.span`
   width: ${HamBurgerConfig.width}px;
   height: ${HamBurgerConfig.weight}px;
   background-color: ${({ theme }) => theme.green_400};
@@ -224,12 +224,12 @@ export default function NavBar() {
           <Logo to="/">Peanu's blog</Logo>
         </LogoBlock>
 
-        <HamburgerSecondWrapper
+        <HamburgerWrapper
           $isMenuOpen={isMenuOpen}
           onClick={handleToggleMenu}
         >
-          <HamburgerSecondInner />
-        </HamburgerSecondWrapper>
+          <HamburgerInner />
+        </HamburgerWrapper>
 
         <Nav $isMenuOpen={isMenuOpen}>
           <List>
