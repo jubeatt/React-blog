@@ -2,11 +2,11 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
 import { useState, useContext } from "react";
+import { login, getMe } from "../../WebAPI";
 import { LoadingContext } from "../../contexts/LoadingContext";
-import { login } from "../../WebAPI";
 import { setAuthToken } from "../../utiles";
-import { AuthContext } from "../../contexts/AuthContext";
-import { getMe } from "../../WebAPI";
+import { setUser } from "../../redux/reducers/userReducer";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import ErrorMessage from "../../components/ErrorMessage";
 
@@ -70,8 +70,8 @@ const SubmitButton = styled.button`
 `;
 
 export default function LoginPage() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { setUser } = useContext(AuthContext);
   const { setIsLoading } = useContext(LoadingContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -80,23 +80,28 @@ export default function LoginPage() {
   const handleUsernameChange = e => setUsername(e.target.value);
   const handlePasswordChange = e => setPassword(e.target.value);
   const handleFormFocus = () => setLoginError(null);
+
   const handleSubmit = async e => {
     setIsLoading(true);
     e.preventDefault();
-    const data = await login(username, password);
-    if (data.ok === 0) {
+    const loginResponse = await login({ username, password });
+
+    // 帳密驗證
+    if (loginResponse.ok === 0) {
       setIsLoading(false);
-      return setLoginError(data.message);
+      return setLoginError(loginResponse.message);
     }
-    setAuthToken(data.token);
-    const res = await getMe();
-    // getMe 失敗
-    if (res.ok !== 1) {
+    const { token } = loginResponse;
+    setAuthToken(token);
+
+    // 查詢使用者
+    const getUserResponse = await getMe();
+    if (getUserResponse.ok === 0) {
       setIsLoading(false);
-      return setAuthToken(null);
+      setAuthToken(null);
+      return setLoginError(getUserResponse.message);
     }
-    setIsLoading(false);
-    setUser(res.data);
+    dispatch(setUser(getUserResponse));
     navigate("/");
   };
 

@@ -1,10 +1,11 @@
 import { Link as NavLink, useLocation } from "react-router-dom";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { MEDIA_PC } from "../constants/breakpoint";
 import { MEDIA_HOVER } from "../constants/hover";
-import { AuthContext } from "../contexts/AuthContext";
 import { setAuthToken } from "../utiles";
+import { useSelector, useDispatch } from "react-redux";
+import { selectUser, setUser } from "../redux/reducers/userReducer";
 import styled from "styled-components";
 
 const HamBurgerConfig = {
@@ -196,9 +197,10 @@ const SignUpLink = styled(NavLink)`
 `;
 
 export default function NavBar() {
+  const dispatch = useDispatch();
   const history = useNavigate();
   const location = useLocation();
-  const { user, setUser } = useContext(AuthContext);
+  const user = useSelector(selectUser);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleToggleMenu = () => {
@@ -207,9 +209,8 @@ export default function NavBar() {
 
   const handleLogout = () => {
     setAuthToken(null);
-    setUser(null);
+    dispatch(setUser(null));
     setIsMenuOpen(false);
-    if (window.location.hash === "#/") return window.location.reload();
     history("/");
   };
 
@@ -224,10 +225,7 @@ export default function NavBar() {
           <Logo to="/">Peanu's blog</Logo>
         </LogoBlock>
 
-        <HamburgerWrapper
-          $isMenuOpen={isMenuOpen}
-          onClick={handleToggleMenu}
-        >
+        <HamburgerWrapper $isMenuOpen={isMenuOpen} onClick={handleToggleMenu}>
           <HamburgerInner />
         </HamburgerWrapper>
 

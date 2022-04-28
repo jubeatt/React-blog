@@ -1,11 +1,8 @@
 import { GlobalStyle } from "./components/GlobalStyle";
 import { ThemeProvider } from "styled-components";
-import { useState, useEffect } from "react";
-import { AuthContext } from "./contexts/AuthContext";
+import { useState } from "react";
 import { LoadingContext } from "./contexts/LoadingContext";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
-import { getMe } from "./WebAPI";
-import { getAuthToken, setAuthToken } from "./utiles";
 import HomePage from "./pages/home-page/";
 import AboutPage from "./pages/about-page/";
 import AddPostPage from "./pages/add-post-page";
@@ -47,46 +44,31 @@ const theme = {
 };
 
 function App() {
-  const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const token = getAuthToken();
-    if (token === "null") return;
-    getMe().then(res => {
-      if (res.ok === 1) {
-        setUser(res.data);
-      } else {
-        setAuthToken(null);
-      }
-    });
-  }, []);
 
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
         <LoadingContext.Provider value={{ isLoading, setIsLoading }}>
-          <AuthContext.Provider value={{ user, setUser }}>
-            <Router>
-              <NavBar />
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/about" element={<AboutPage />} />
-                <Route path="/categories" element={<CategoriesPage />} />
-                <Route path="/add-post" element={<AddPostPage />} />
-                <Route path="/posts/:id" element={<SinglePostPage />} />
-                <Route path="/log-in" element={<LoginPage />} />
-                <Route path="/sign-up" element={<SignUpPage />} />
-              </Routes>
-              <Footer />
-              <StyledLoader
-                active={isLoading}
-                spinner={true}
-                text="Loading your content..."
-              ></StyledLoader>
-            </Router>
-          </AuthContext.Provider>
+          <Router>
+            <NavBar />
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/categories" element={<CategoriesPage />} />
+              <Route path="/add-post" element={<AddPostPage />} />
+              <Route path="/posts/:id" element={<SinglePostPage />} />
+              <Route path="/log-in" element={<LoginPage />} />
+              <Route path="/sign-up" element={<SignUpPage />} />
+            </Routes>
+            <Footer />
+            <StyledLoader
+              active={isLoading}
+              spinner={true}
+              text="Loading your content..."
+            ></StyledLoader>
+          </Router>
         </LoadingContext.Provider>
       </ThemeProvider>
     </Provider>

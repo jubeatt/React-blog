@@ -16,7 +16,7 @@ export const getSinglePost = async id => {
   return json;
 };
 
-export const login = async (username, password) => {
+export const login = async ({ username, password }) => {
   const res = await fetch(`${BASE_URL}/login`, {
     method: "POST",
     headers: {
@@ -31,7 +31,7 @@ export const login = async (username, password) => {
   return json;
 };
 
-export const signUp = async (username, password, nickname) => {
+export const signUp = async ({ username, password, nickname }) => {
   const res = await fetch(`${BASE_URL}/register`, {
     method: "POST",
     headers: {

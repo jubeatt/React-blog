@@ -3,10 +3,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faLock, faCookie } from "@fortawesome/free-solid-svg-icons";
 import { useState, useContext } from "react";
 import { LoadingContext } from "../../contexts/LoadingContext";
-import { signUp } from "../../WebAPI";
 import { setAuthToken } from "../../utiles";
-import { AuthContext } from "../../contexts/AuthContext";
-import { getMe } from "../../WebAPI";
+import { setUser } from "../../redux/reducers/userReducer";
+import { signUp, getMe } from "../../WebAPI";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import ErrorMessage from "../../components/ErrorMessage";
 
@@ -71,8 +71,8 @@ const SubmitButton = styled.button`
 `;
 
 export default function SignUp() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { setUser } = useContext(AuthContext);
   const { setIsLoading } = useContext(LoadingContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -83,22 +83,24 @@ export default function SignUp() {
   const handlePasswordChange = e => setPassword(e.target.value);
   const handleNicknameChange = e => setNickname(e.target.value);
   const handleFormFocus = () => setSignUpError(null);
+
   const handleSubmit = async e => {
     setIsLoading(true);
     e.preventDefault();
-    const result = await signUp(username, password, nickname);
-    if (result.ok === 0) {
+    const signUpResponse = await signUp({ username, password, nickname });
+    if (signUpResponse.ok === 0) {
       setIsLoading(false);
-      return setSignUpError(result.message);
+      return setSignUpError(signUpResponse.message);
     }
-    // 寫入 storage
-    setAuthToken(result.token);
-    // 取得個人資料
-    const userData = await getMe();
-    // 寫入 state
-    setUser(userData);
+    const { token } = signUpResponse;
+    setAuthToken(token);
+    const getUserResponse = await getMe();
+    if (getUserResponse.ok === 0) {
+      setIsLoading(false);
+      return setSignUpError(getUserResponse.message);
+    }
+    dispatch(setUser(getUserResponse));
     setIsLoading(false);
-    // 返回首頁
     navigate("/");
   };
 

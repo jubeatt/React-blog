@@ -3,6 +3,9 @@ import { deletePost } from "../../WebAPI";
 import { MEDIA_PC } from "../../constants/breakpoint";
 import { LoadingContext } from "../../contexts/LoadingContext";
 import { useSelector, useDispatch } from "react-redux";
+import { getMe } from "../../WebAPI";
+import { setUser, selectUser } from "../../redux/reducers/userReducer";
+import { getAuthToken, setAuthToken } from "../../utiles";
 import {
   getAllPosts,
   selectAllPosts,
@@ -67,6 +70,7 @@ export default function HomePage() {
   const dispatch = useDispatch();
   const posts = useSelector(selectAllPosts);
   const totalPage = useSelector(selectTotalPage);
+  const user = useSelector(selectUser);
   const [page, setPage] = useState(1);
 
   const handleChangePage = useCallback(
@@ -85,6 +89,7 @@ export default function HomePage() {
     dispatch(getAllPosts(page, LIMIT)).then(() => setIsLoading(false));
   };
 
+  // 抓文章
   useEffect(() => {
     setIsLoading(true);
     window.scrollTo({
@@ -96,6 +101,19 @@ export default function HomePage() {
       setTimeout(() => setIsLoading(false), 500)
     );
   }, [page, setIsLoading, dispatch]);
+
+  // 抓登入狀態
+  useEffect(() => {
+    if (user) return;
+    const token = getAuthToken();
+    if (token === "null") return;
+    getMe().then(res => {
+      if (res.ok === 0) {
+        return setAuthToken(null);
+      }
+      dispatch(setUser(res));
+    });
+  }, [dispatch, user]);
 
   return (
     <Container>

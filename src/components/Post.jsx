@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useContext } from "react";
-import { AuthContext } from "../contexts/AuthContext";
+import { useSelector, useDispatch } from "react-redux";
+import { selectUser, setUser } from "../redux/reducers/userReducer";
 import styled from "styled-components";
 import avatar from "../assets/avatar.jpg";
 import PropTypes from "prop-types";
@@ -80,7 +81,7 @@ const DeleteButton = styled.button`
 `;
 
 export default function Post({ id, title, body, createdAt, handleDeletePost }) {
-  const { user } = useContext(AuthContext);
+  const user = useSelector(selectUser);
 
   return (
     <PostItem>

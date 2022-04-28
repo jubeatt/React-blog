@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { checkPermission } from "../../utiles";
 import { LoadingContext } from "../../contexts/LoadingContext";
 import { useState, useEffect, useContext } from "react";
 import {
@@ -8,6 +7,7 @@ import {
   setNewPostResponse,
 } from "../../redux/reducers/postsReducer";
 import { useSelector, useDispatch } from "react-redux";
+import { selectUser } from "../../redux/reducers/userReducer";
 import MDEditor from "@uiw/react-md-editor";
 import styled from "styled-components";
 import ErrorMessage from "../../components/ErrorMessage";
@@ -78,15 +78,14 @@ export default function AddPostPage() {
   const [mdValue, setMdValue] = useState("");
   const [titleValue, setTitleValue] = useState("");
   const [addPostError, setAddPostError] = useState(null);
+  const user = useSelector(selectUser);
   const newPostResponse = useSelector(selectNewPostResponse);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    checkPermission().then(isLogin => {
-      // 沒登入
-      if (!isLogin) return navigate("/");
-    });
-  }, [navigate]);
+    // 沒登入
+    if (!user) return navigate("/");
+  }, [user, navigate]);
 
   useEffect(() => {
     setIsLoading(false);
